@@ -1,7 +1,7 @@
 {
   "name": "eve-market",
   "version": "1.0.0",
-  "description": "",
+  "description": "EVE Online market tool",
   "main": "lib/market.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
