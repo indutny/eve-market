@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const fs = require('fs');
+const argv = require('yargs')
+    .usage('Usage: $0 --meta data/meta.json --from data/region.json ' +
+               '--to data/region.json')
+    .demand([ 'meta', 'from', 'to' ])
+    .argv;
+
+const analyzer = require('../').Analyzer.create();
+
+console.log('Parsing %s', argv.meta);
+const meta = JSON.parse(fs.readFileSync(argv.meta).toString());
+console.log('Parsing %s done', argv.meta);
+
+console.log('Parsing %s', argv.from);
+const from = JSON.parse(fs.readFileSync(argv.from).toString());
+console.log('Parsing %s done', argv.from);
+
+console.log('Parsing %s', argv.to);
+const to = JSON.parse(fs.readFileSync(argv.to).toString());
+console.log('Parsing %s done', argv.to);
+
+analyzer.runInter(meta, from, to, {
+  minVolume: 10,
+  count: 100,
+  cargo: 18809,
+  tax: 0.009
+}, function(err, out) {
+  if (err)
+    throw err;
+
+  console.log(JSON.stringify(out, null, 2));
+});

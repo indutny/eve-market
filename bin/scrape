@@ -1,0 +1,56 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const fs = require('fs');
+const ProgressBar = require('progress');
+const argv = require('yargs')
+    .usage(
+      'Usage: $0 market --region "The Forge" --meta data/meta.json -o ...\n' +
+      'or...  $0 meta -o ...')
+    .alias('o', 'out')
+    .demand([ 'out' ])
+    .argv;
+const command = argv._[0];
+
+const progress = new ProgressBar('Downloading [:bar] :current/:total :eta', {
+  total: 100,
+  width: 80
+});
+const scraper = require('../').Scraper.create();
+
+if (command === 'meta') {
+  scraper.scrapeMeta(function(err, out) {
+    if (err)
+      throw err;
+
+    fs.writeFileSync(argv.out, JSON.stringify(out));
+  });
+
+  console.error('Scraping meta');
+} else {
+  if (!argv.meta || !argv.region)
+    throw new Error('--meta and --region are required');
+
+  const meta = JSON.parse(fs.readFileSync(argv.meta).toString());
+
+  console.error('Scraping: %s', argv.region);
+
+  scraper.scrapeMarket(argv.region, meta, function(err, out) {
+    if (err)
+      throw err;
+
+    fs.writeFileSync(argv.out, JSON.stringify(out));
+  });
+}
+
+scraper.on('progress', function(current, total) {
+  progress.total = total;
+  progress.tick();
+});
+
+process.once('SIGUSR2', function() {
+  scraper.on('log', function(msg) {
+    console.error(msg);
+  });
+});
