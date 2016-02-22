@@ -1,7 +1,5 @@
 #!/bin/sh
-../bin/scrape --region "The Forge" --meta ../data/meta.json -o ../data/forge.json
-../bin/scrape --region "The Citadel" --meta ../data/meta.json -o \
-  ../data/citadel.json
-../bin/scrape --region "Domain" --meta ../data/meta.json -o ../data/domain.json
-../bin/scrape --region "Sinq Laison" --meta ../data/meta.json -o \
-  ../data/sinq.json
+./bin/scrape --region "The Forge" --meta ./data/meta.json -o ./data/forge.json
+./bin/scrape --region "Domain" --meta ./data/meta.json -o ./data/domain.json
+./bin/scrape --region "Sinq Laison" --meta ./data/meta.json -o \
+  ./data/sinq.json
