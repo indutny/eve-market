@@ -7,7 +7,7 @@ Just some scripts to analyze market using [CREST API][1].
 ```sh
 #
 # IMPORTANT:
-# Install node.js v4 (or later) using nvm, apt, or whatever
+# Install node.js v4 or v5 using nvm, apt, or whatever
 #
 git clone git://github.com/indutny/eve-market
 cd eve-market
