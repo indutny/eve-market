@@ -37,7 +37,7 @@ analyzer.runInter(meta, from, to, config, function(err, out) {
   // Format output
   const rows = [
     [
-      'name', 'profit', 'buy for', 'volume', 'm3',
+      'name', 'profit', 'funds required', 'volume', 'm3',
       'sell price', 'sell volume', 'sell min volume', 'sell location',
       'buy price', 'buy volume', 'buy min volume', 'buy location'
     ]
