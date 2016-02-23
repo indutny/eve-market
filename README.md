@@ -19,6 +19,8 @@ cp -rf config.json.example config.json
     --from ./data/forge.json --to ./data/sinq.json | less -S
 ```
 
+[Output example][0]
+
 ## Configuration
 
 `config.json` fields:
@@ -53,3 +55,5 @@ NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
 DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+[0]: https://gist.github.com/indutny/d71dc9dff1c521e28e7a
