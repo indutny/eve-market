@@ -1,6 +1,6 @@
 # EVE online market tool
 
-Just some scripts to analyze market.
+Just some scripts to analyze market using [CREST API][1].
 
 ## Instructions
 
@@ -57,3 +57,4 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 [0]: https://gist.github.com/indutny/d71dc9dff1c521e28e7a
+[1]: https://wiki.eveonline.com/en/wiki/CREST_Getting_Started
