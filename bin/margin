@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const argv = require('yargs')
+    .usage('Usage: $0 --meta data/meta.json --region data/region.json ' +
+               '--station "Station name"')
+    .demand([ 'meta', 'region', 'station' ])
+    .argv;
+
+const table = require('table')['default'];
+const eve = require('../');
+const analyzer = eve.Analyzer.create();
+
+const readJSON = eve.utils.readJSON;
+
+const meta = readJSON(argv.meta);
+const region = readJSON(argv.region);
+const station = argv.station;
+
+analyzer.margin(meta, region, station, function(err, out) {
+  if (err)
+    throw err;
+
+  const isk = eve.utils.isk;
+
+  // Format output
+  const rows = [
+    [
+      'name', 'margin %', 'margin ISK',
+      'min sell', 'avg sell', 'sell volume',
+      'max buy', 'avg buy', 'buy volume'
+    ]
+  ];
+  for (let i = 0; i < out.length; i++) {
+    const row = out[i];
+
+    rows.push([
+      row.name, Math.round(row.margin.percent * 10000) / 100 + '%',
+      isk(row.margin.price),
+
+      isk(row.sell.low), isk(row.sell.avg), Math.floor(row.sell.volume),
+      isk(row.buy.high), isk(row.buy.avg), Math.floor(row.buy.volume)
+    ]);
+  }
+  console.log(table(rows));
+});

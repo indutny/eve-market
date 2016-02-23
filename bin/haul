@@ -20,19 +20,11 @@ const from = readJSON(argv.from);
 const to = readJSON(argv.to);
 const config = readJSON(argv.config);
 
-analyzer.runInter(meta, from, to, config, function(err, out) {
+analyzer.haul(meta, from, to, config, function(err, out) {
   if (err)
     throw err;
 
-  const isk = (value) => {
-    let out = Math.floor(value).toString();
-    let frac = Math.floor((value * 100) % 100).toString();
-
-    for (let i = out.length - 3; i > 0; i -= 3)
-      out = out.slice(0, i) + '\'' + out.slice(i);
-
-    return `${out}.${frac} ISK`;
-  };
+  const isk = eve.utils.isk;
 
   // Format output
   const rows = [

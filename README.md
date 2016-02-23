@@ -15,7 +15,7 @@ npm install
 ./bin/bootstrap
 ./bin/update
 cp -rf config.json.example config.json
-./bin/analyze --config config.json --meta ./data/meta.json \
+./bin/haul --config config.json --meta ./data/meta.json \
     --from ./data/forge.json --to ./data/sinq.json | less -S
 ```
 
