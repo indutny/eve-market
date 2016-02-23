@@ -17,7 +17,10 @@ const progress = new ProgressBar('Downloading [:bar] :current/:total :eta', {
   total: 100,
   width: 80
 });
-const scraper = require('../').Scraper.create();
+
+const eve = require('../');
+const scraper = eve.Scraper.create();
+const readJSON = eve.utils.readJSON;
 
 if (command === 'meta') {
   scraper.scrapeMeta(function(err, out) {
@@ -32,7 +35,7 @@ if (command === 'meta') {
   if (!argv.meta || !argv.region)
     throw new Error('--meta and --region are required');
 
-  const meta = JSON.parse(fs.readFileSync(argv.meta).toString());
+  const meta = readJSON(argv.meta);
 
   console.error('Scraping: %s', argv.region);
 

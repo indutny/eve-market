@@ -2,35 +2,61 @@
 
 'use strict';
 
-const fs = require('fs');
 const argv = require('yargs')
     .usage('Usage: $0 --meta data/meta.json --from data/region.json ' +
                '--to data/region.json')
-    .demand([ 'meta', 'from', 'to' ])
+    .alias('c', 'config')
+    .demand([ 'config', 'meta', 'from', 'to' ])
     .argv;
 
-const analyzer = require('../').Analyzer.create();
+const table = require('table')['default'];
+const eve = require('../');
+const analyzer = eve.Analyzer.create();
 
-console.log('Parsing %s', argv.meta);
-const meta = JSON.parse(fs.readFileSync(argv.meta).toString());
-console.log('Parsing %s done', argv.meta);
+const readJSON = eve.utils.readJSON;
 
-console.log('Parsing %s', argv.from);
-const from = JSON.parse(fs.readFileSync(argv.from).toString());
-console.log('Parsing %s done', argv.from);
+const meta = readJSON(argv.meta);
+const from = readJSON(argv.from);
+const to = readJSON(argv.to);
+const config = readJSON(argv.config);
 
-console.log('Parsing %s', argv.to);
-const to = JSON.parse(fs.readFileSync(argv.to).toString());
-console.log('Parsing %s done', argv.to);
-
-analyzer.runInter(meta, from, to, {
-  minVolume: 10,
-  count: 100,
-  cargo: 18809,
-  tax: 0.009
-}, function(err, out) {
+analyzer.runInter(meta, from, to, config, function(err, out) {
   if (err)
     throw err;
 
-  console.log(JSON.stringify(out, null, 2));
+  const isk = (value) => {
+    let out = Math.floor(value).toString();
+    let frac = Math.floor((value * 100) % 100).toString();
+
+    for (let i = out.length - 3; i > 0; i -= 3)
+      out = out.slice(0, i) + '\'' + out.slice(i);
+
+    return `${out}.${frac} ISK`;
+  };
+
+  // Format output
+  const rows = [
+    [
+      'name', 'profit', 'buy for', 'volume', 'm3',
+      'sell price', 'sell volume', 'sell min volume', 'sell location',
+      'buy price', 'buy volume', 'buy min volume', 'buy location'
+    ]
+  ];
+  for (let i = 0; i < out.length; i++) {
+    const row = out[i];
+
+    rows.push([
+      row.name, isk(row.profit), isk(row.buyFor),
+      Math.floor(row.volume), Math.floor(row.volume * row.itemVolume) + ' m3',
+
+      isk(row.sell.price), Math.floor(row.sell.volume),
+      row.sell.minVolume,
+      row.sell.location.name,
+
+      isk(row.buy.price), Math.floor(row.buy.volume),
+      row.buy.minVolume,
+      row.buy.location.name
+    ]);
+  }
+  console.log(table(rows));
 });

@@ -2,6 +2,33 @@
 
 Just some scripts to analyze market.
 
+## Instructions
+
+```sh
+#
+# IMPORTANT:
+# Install node.js v4 (or later) using nvm, apt, or whatever
+#
+git clone git://github.com/indutny/eve-market
+cd eve-market
+npm install
+./bin/bootstrap
+./bin/update
+cp -rf config.json.example config.json
+./bin/analyze --config config.json --meta ./data/meta.json \
+    --from ./data/forge.json --to ./data/sinq.json | less -S
+```
+
+## Configuration
+
+`config.json` fields:
+
+* `minVolume` - discard buy/sell orders with volume less than specified value
+* `count` - number of suggested routes to print
+* `cargo` - ship's cargo size
+* `funds` - available funds
+* `tax` - sales tax (depends on your skills), note `0.009` means `0.9%`
+
 #### LICENSE
 
 This software is licensed under the MIT License.
