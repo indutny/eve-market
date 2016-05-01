@@ -1,6 +1,6 @@
 {
   "name": "eve-market",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "EVE Online market tool",
   "main": "lib/market.js",
   "scripts": {
